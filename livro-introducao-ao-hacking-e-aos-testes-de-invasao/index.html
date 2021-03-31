@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang='pt-br'>
+    <head>
+        <meta charset="utf-8">
+        <title>Introdução ao hacking e aos testes de invasão</title>
+        <link rel='icon' href="./img/icon.png">
+        <link rel='stylesheet' href="./css/css.css">
+        <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div id='header'>
+            <div id='main-title'>
+                <h1>INTRODUÇÃO AO HACKING E AOS TESTES DE INVASÃO</h1>
+            </div>
+        </div>
+        <div id='main'>
+            <div id='text'>
+                <h1>Algumas ferramentas úteis para reconhecimento:</h1>
+                <p>
+                   <span class='topic'>HTTrack:</span> Basicamente, esta ferramenta clona um site.
+                </p>
+                <p>
+                    <span class='topic'>Google dorks:</span> Uma possível boa definição sobre google dorks seria "um modo mais eficiente de se pesquisar no google". 
+                    Sendo a sintaxe basicamente: [dork]:[termo] | Exemplo(s): intext:"Index of" site:*.gov.br; intext:upload.php site:*.gov.br; 
+                    <a href="https://www.exploit-db.com/google-hacking-database">Site contendo algumas dorks que podem ser uteis.</a>
+                </p>
+                <p>
+                    <span class='topic'>The harvester:</span> Ferramenta extremamente útil para vasculhar diversas informações relacionados a um site, empresa, etc...
+                </p>
+                <p>
+                    <span class='topic'>Comando host:</span> Basicamente, mostra o ip com base em um DNS informado, ou vice-versa, sendo a sintaxe: [host][ip/dns]
+                </p>
+                <p>
+                    <span class='topic'>Nslookup:</span> Basicamente, permite obter informações sobre o dns de um dominio, sendo a sintaxe (em sequencia): nslookup | > server [ip] | > set type = [tipo] 
+                </p>
+                <p>Antes de partir pra proxima ferramenta é importante explicar uma coisa: O modo como dois servidores dns "conversam" (trocam dados entre si) é chamado de 
+                "transferencia de zona"</p>
+                <p>
+                    <span class='topic'>Dig:</span> Outra ferramenta para consulta de dns (inclusive, tentando realizar a transferencia de zona), sendo a sintaxe: dig [ip][dominio] -t AXFR |
+                    Obs: transferencia de zona é tambem chamado de AXFR.
+                </p>
+                <p>
+                    <span class='topic'>Fierce:</span> Outra ferramenta para consulta de dns (contudo, caso o AXFR falhe, realiza brute force para tentar descobrir informações), sendo a sintaxe:
+                    fiercepç -dns [endereço_do_site]
+                </p>
+                <p>
+                    <span class='topic'>MetaGooFill:</span> Tenta extrair os metadados dos arquivos de um determinado domínio, sendo a sintaxe:
+                    MetaGooFill -d [domínio] -t [tipos_de_arquivo_por_extensão] -n [número_de_arquivos_por_extensão] -o [pasta_para_salvar_os_resultados] -f [arquivo_a_ser_salvo_com_extensão]
+                </p>
+                <p>
+                    <span class='topic'>ThreadAgent:</span> Site que colhe díversas informações sobre um domínio</p>
+                <p>
+                    <span class='topic'>Extras:</span> <a href="https://github.com/aboul3la/Sublist3r">Ferramenta para enumerar subdominios de um site</a>, 
+                <a href="https://github.com/OJ/gobuster">ferramenta para listar os diretorios de um site</a>
+                </p>
+                <h1>Scanning:</h1>
+                <p>
+                    <span class='topic'>Pivot:</span> Basicamente, trata-se do processo de utilizar de um computador já comprometido para invadir outros na rede.
+                </p>
+                <p>
+                    <span class='topic'>Ping:</span> Basicamente, ping é um tipo especial de pacote, denominado ICMP (internet control message protocol), que determina se um host esta ativo, 
+                    sendo a sintaxe: ping [ip/endereço_do_site] | ou, para pings em multiplos hosts: fping -a -g [ip1] [ip2] -> "-a" mostra somente os hosts ativos
+                    "-g" especifica a faixa e, na logíca das faixas seria algo como ip1 = 192.168.2.1 e ip2 = 192.168.2.255. Curiosidade cada "numero entre os pontos" é
+                    chamado de octeto.
+                </p>
+                <p>
+                    <span class='topic'>Scan de portas:</span> Basicamente, trata-se do envio de pacotes em determinadas portas (sendo estas TCP ou UDP) de determinados hosts.
+                </p>
+                <p>
+                    <span class='topic'>Handshake de três vias (ou como funciona uma comunicação TCP): </span>
+                </p>
+                <picture>
+                    <img src="./img/handshake.jpg" alt="handshake">
+                </picture>
+                <p>
+                    <span class='topic'>Scan TCP connect:</span> Estabelece o handshake completo, sendo a sintaxe: nmap -sT -p- Pn [ip] -> o "s" de "-sT" indica o tipo de scan, sendo o "T" o tipo tcp connect,
+                    o "-p-" faz o nmap escanear todas as 65.536 portas possíveis, o "-Pn" força o nmap a efetuar o scan como se todo o sistema estivesse ativo. Obs: 
+                    Para fazer por faixa de ip basta concatenar -[número] no último octeto. Obs2: É possível salvar o resultado de scan com "-iL [pasta_do_arquivo]" no final do comando.
+                </p>
+                <p>
+                    <span class='topic'>Scan Syn:</span> Não faz o handshake completo (cancelando ao receber a resposta, sendo portanto mais rapído e discreto, dado que a conexão nunca é oficialmente
+                    concluida, apesar de que os firewalls mais modernos já conseguem detectar esse tipo de scan). Sintaxe: -sS
+                </p>
+                <p>
+                    <span class='topic'>Scan UDP:</span> É um scan que tenta se conectar as portas UDP. Sintaxe: -sU | Obs: Pelo fato do scan ser mais lento, não se utiliza -p- e nem -Pn
+                </p>
+                <p>
+                    <span class='topic'>Para enumerar a versão dos serviços (no nmap) rodando utilizar -sV</span>
+                </p>
+                <p>
+                    <span class='topic'>RFC:</span> Basicamente, RFC é um documento que contém notas, ou as especificações técnicas que abordam uma tecnologia ou padrão. No caso do protocolo TCP,
+                    define que se uma porta fechada receber um pacote que não tenha uma flag SYN, ACK ou RST, a porta deve enviar um pacote RST. E caso a porta esteja
+                    aberta e receber um pacto sem as flags SYN, ACK ou RST, ele deve ser ignorado.
+                </p>
+                <p>
+                    <span class='topic'>Scan XMAS:</span> Envia um pacto com as flags FIN, PSH e URG. Não enviando as flags comuns do handshake, sendo a sintaxe: -sX
+                </p>
+                <p>
+                    <span class='topic'>Scan nullo:</span> Envia um pacote sem flags, sendo a sintaxe: -sN
+                </p>
+                <p>
+                    <span class='topic'>Obs:</span> Os scans XMAS e nullo so são eficientes em sistemas que seguem o RFC do TCP (geralmente sistemas Linux, ou Unix).
+                </p>
+                <p>
+                    <span class='topic'>NSE:</span> O nmap possui uma vasta biblioteca de scripts já prontos que podem auxiliar no processo de pentest em geral, 
+                    <a href="https://www.nmap.org/nsedoc">sendo disponível neste link.</a>
+                </p>
+                <p>
+                    <span class='topic'>Extras:</span> Para alterar a velocidade de um scan: -T [0-5] | Para determinar o sistema operacional: -O |
+                    Para se conectar a um serviço: telnet [ip_alvo] | Para se conectar ao SSH do alvo: ssh [root@ip_alvo]
+                </p>
+                <h1>Exploitation:</h1>
+                <p>
+                    <span class='topic'>Sobre exploits e payloads:</span>
+                    <picture>
+                        <img src="./img/exploit.png"/>
+                    </picture>
+                </p>
+                <p>
+                    <span class='topic'>Medusa:</span> Ferramenta para fazer brute force em serviços online, sendo a sintaxe:
+                    medusa -h [ip_alvo] -u [usuario] -P [path_dicionario_de_senhas] -M [servico_a_ser_atacado] | Obs: É possível usar uma lista de usuarios com -U [path] |
+                    Obs2: RockU e a lista do JTR são duas excelentes listas para efetuar brute force (sendo ambas nativas no Kali).
+                </p>
+                <p>
+                    <span class='topic'>Metasploit:</span> Literalmente, um framework inteiro contendo uma serie enorme de exploits e payloads, sendo a sintaxe (em sequencia):
+                    msfconsole | search [possível_vulnerabilidade] | use [path_exploit] | show payloads | set payload [path_payload] | show options | set [opção] [configuração] |
+                    Obs: RHOST é o alvo, e LHOST é a maquina local. | Um payload extremamente importante: Meterpreter.
+                </p>
+                <p>
+                    <span class='topic'>Sobre quebra de hashing de senhas:</span> Localização do arquivo SAM no windows: system32/config | Localização do arquivo shadow no linux
+                    /etc/shadow | Localização do arquivo password no linux /etc/password | Obs: A quebra de hash de senhas usando o SAM so funciona com o sistema desligado. |
+                    No diretorio onde se localiza o arquivo SAM: > samdump2 syestem SAM > [path] -> john [path] --format = [formato_criptografia] | Em linux:
+                    meterpreter > hashdump -> unshadow /etc/password /etc/shadow > [path.txt] -> john [flag] [path]
+                </p>
+                <h1>Exploração web:</h1>
+                <p>
+                    <span class='topic'>Nikto:</span> Basicamente, faz uma consulta ao servidor web, tendo como sintaxe:
+                    nikto -h [ip_alvo] -p [porta] |Obs porta,porta; porta-faixa
+                </p>
+                <p>
+                    <span class='topic'>SQL injection (SQLi):</span> Basicamente, injeta um codigo SQL malicioso. Exemplo: ' or 1=1-- ->
+                    Como fica a request no banco de dados: SELECT * FROM product WHERE category = '' or 1=1-- | SELECT é usado para informar ao SQL que você
+                    deseja pesquisar e retornar os resultados de uma tabela. * serve para retornar todas as colunas da tabela quando houver correspondencia.
+                    FROM serve para indicar a tabela. WHERE serve para indicar a condicional. A condicional 1=1-- serva para retornar o valor True, assim
+                    exibindo toda a tabela, e -- serve para tratar todo codigo posterior como comentario (como possíveis aspas, por exemplo).
+                </p>
+                <h1>Mantendo a conexão com netcat:</h1>
+                <p>
+                    <span class='topic'>Netcat:</span> Basicamente, é um canivete suíço de comunicação entre redes. Na maquina alvo: nc -l -p [porta] | 
+                    Na maquina host: nc [ip] [porta]. Obs: Cryptcat é o netcat com criptografia.
+                </p>
+                <h1>Extras:</h1>
+                <p>
+                    Dado que pentest/hacking é uma atividade que verdadeiramente só é possível de ser aprendida na pratica, recomendo veementemente que você pratique as
+                    habilidades aqui apresentadas, para isso recomendo CTFs(capture the flag) como o <a href="https://www.hackthebox.eu">HackTheBox</a>,
+                    <a href="https://capturetheflag.com.br/">HackerSec</a>, e <a href="https://www.tryhackme.com/">TryHackMe</a>. Além disso, a comunidade de hacking
+                    no Brasil é extremamente ativa e colaborativa, possuindo diversos servidores no Discord voltados para esse tema, como o 
+                    <a href="https://discord.gg/84mpVCSdSm">Hard Disk</a> ou <a href="https://discord.gg/ZGgjj2Cerr">Guia anonima</a>. E, por fim, em questão de bons criadores
+                    de conteudo sobre hacking recomendo o <a href="https://www.youtube.com/channel/UCoOH1mq8KR5IxnUR4bMDXpA">Andres Alonso</a>, 
+                    <a href="https://www.twitch.tv/ofjaaaah">Ofjaaaah</a>, <a href="https://www.youtube.com/channel/UC70YG2WHVxlOJRng4v-CIFQ">Gabriel Pato</a>, e
+                    <a href="https://www.instagram.com/hackingnaweboficial/">Hacking na Web</a>. Boa sorte, e bons estudos!
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
